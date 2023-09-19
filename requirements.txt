@@ -1,0 +1,15 @@
+beautifulsoup4==4.9.3
+certifi==2021.5.30
+chardet==4.0.0
+idna==2.10
+itsdangerous==2.0.1
+lxml==4.6.3
+prettytable==3.9.0
+requests==2.25.1
+requests-cache==0.6.3
+six==1.16.0
+soupsieve==2.2.1
+tqdm==4.61.0
+url-normalize==1.4.3
+urllib3==1.26.6
+wcwidth==0.2.6
