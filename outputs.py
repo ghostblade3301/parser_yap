@@ -1,6 +1,7 @@
 # outputs.py
 import csv
 import datetime as dt
+import logging
 from constants import BASE_DIR, DATETIME_FORMAT
 from prettytable import PrettyTable
 
@@ -48,3 +49,4 @@ def file_output(results, cli_args):
         writer = csv.writer(f, dialect='unix')
         # Передаём в метод writerows список с результатами парсинга.
         writer.writerows(results)
+    logging.info(f'Файл с результатами был сохранён: {file_path}')

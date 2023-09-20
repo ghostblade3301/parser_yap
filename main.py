@@ -1,9 +1,10 @@
+import logging
 import re
 import requests_cache
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
-from configs import configure_argument_parser
+from configs import configure_argument_parser, configure_logging
 from outputs import control_output
 from tqdm import tqdm
 
@@ -90,6 +91,7 @@ def download(session):
     # В бинарном режиме открывается файл на запись по указанному пути.
     with open(archive_path, 'wb') as file:
         file.write(response.content)
+    logging.info(f'Архив был загружен и сохранён: {archive_path}') 
 
 
 MODE_TO_FUNCTION = {
@@ -99,26 +101,28 @@ MODE_TO_FUNCTION = {
 }
 
 
-# Обновите код функции main()
 def main():
+    # Запускаем функцию с конфигурацией логов.
+    configure_logging()
+    # Отмечаем в логах момент запуска программы.
+    logging.info('Парсер запущен!')
+
     arg_parser = configure_argument_parser(MODE_TO_FUNCTION.keys())
     args = arg_parser.parse_args()
+    # Логируем переданные аргументы командной строки.
+    logging.info(f'Аргументы командной строки: {args}')
 
-    # Создание кеширующей сессии.
     session = requests_cache.CachedSession()
-    # Если был передан ключ '--clear-cache', то args.clear_cache == True.
     if args.clear_cache:
-        # Очистка кеша.
         session.cache.clear()
 
     parser_mode = args.mode
-    # С вызовом функции передаётся и сессия.
     results = MODE_TO_FUNCTION[parser_mode](session)
 
-    # Если из функции вернулись какие-то результаты,
     if results is not None:
-        # передаём их в функцию вывода вместе с аргументами командной строки.
         control_output(results, args)
+    # Логируем завершение работы парсера.
+    logging.info('Парсер завершил работу.')
 
 
 if __name__ == '__main__':
